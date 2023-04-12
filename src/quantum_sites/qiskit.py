@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import requests
 from dateutil import parser
 import json
-import yaml
 
 from .util import la_timezone, eastern_timezone, get_soup, get_main_website
 
@@ -52,7 +51,7 @@ def get_events() -> List[dict]:
     json_string = re.sub(r"([{,])\s*(\w+)\s*:", r'\1"\2":', json_string)
     
     # Convert the string to a dictionary
-    json_dict = yaml.load(json_string, yaml.SafeLoader)
+    json_dict = json.loads(json_string)
 
     for event in json_dict:
         title = event["title"]
