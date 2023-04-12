@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+    app:
+        build: .
+        restart: always
+        environment:
+            - PYTHONUNBUFFERED=1
+            - PYTHONIOENCODING=UTF-8
