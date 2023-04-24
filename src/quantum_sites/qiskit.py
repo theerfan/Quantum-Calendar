@@ -49,7 +49,30 @@ def get_events() -> List[dict]:
 
     # Parse a json string where the keys are not in quotes
     json_string = re.sub(r"([{,])\s*(\w+)\s*:", r'\1"\2":', json_string)
-    
+
+    # Try to fix strings like this which cause problems when parsing the JSON
+    # Example:
+    # "abstract":\' We love "quantizing gravity," indeed. \',
+
+    # Find the indices of all single quotes that come after a colon
+    starting_quote_indices = [
+        m.start() for m in re.finditer(r":[ ]?'", json_string)
+    ]
+
+    # Find the indices of all single quotes that come before a comma
+    ending_quote_indices = [m.start() for m in re.finditer(r"'[ ]?,", json_string)]
+
+    try:
+        # Remove all the double quotes that come between the single quote pairs
+        for start, end in zip(starting_quote_indices, ending_quote_indices):
+            portion_copy = json_string[start : end]
+            portion_copy = portion_copy.replace('"', "")
+            json_string = json_string[:start] + portion_copy + json_string[end:]
+        
+        json_string = json_string.replace("'", "\"")
+    except Exception as e:
+        print("Error removing double quotes inside single quotes")
+
     # Convert the string to a dictionary
     json_dict = json.loads(json_string)
 

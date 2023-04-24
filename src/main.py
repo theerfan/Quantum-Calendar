@@ -14,8 +14,6 @@ la_timezone = timezone("America/Los_Angeles")
 
 all_get_events = [get_berkeley_events, get_iqc_events, get_qiskit_events]
 
-all_get_events = [get_qiskit_events]
-
 def main():
 
     event_dicts = []
