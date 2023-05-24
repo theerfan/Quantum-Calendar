@@ -7,7 +7,7 @@ def get_main_website(url: str):
         url = url.rsplit("/", 1)[0]
     return url
 
-def get_soup(url: str):
+def get_soup(url: str) -> BeautifulSoup:
     # Use requests to get the html for this url
     response = requests.get(url)
     html = response.text
